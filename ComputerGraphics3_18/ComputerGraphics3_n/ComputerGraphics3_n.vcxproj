@@ -133,16 +133,20 @@
     <None Include="vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="crosshair.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="DefaultShape.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="pointcrosshair.cpp" />
     <ClCompile Include="shaderSourceCode.cpp" />
     <ClCompile Include="shape.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="crosshair.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="DefaultShape.h" />
+    <ClInclude Include="pointcrosshair.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="shaderSourceCode.h" />
     <ClInclude Include="shape.h" />

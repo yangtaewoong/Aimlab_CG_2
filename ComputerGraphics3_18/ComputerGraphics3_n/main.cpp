@@ -3,8 +3,10 @@
 #include <vector>
 #include "random.h"
 #include "shaderSourceCode.h"
+#include "crosshair.h"	//--- 크로스헤어 헤더 추가
+#include "pointcrosshair.h"
 
-#define SCREENWIDTH 1980
+#define SCREENWIDTH 1920
 #define SCREENHEIGHT 1080
 
 // 사용자 정의 함수
@@ -37,6 +39,9 @@ bool isDepth = true;
 bool isOrtho = false;
 bool isSolid{};
 
+Crosshair crosshair;	//--- 크로스헤어 객체 선언
+PointCrosshair pointCrosshair(glm::vec3(0.0f, 1.0f, 0.0f), 5.0f); // 녹색, 크기 5.0
+
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
 	//--- 윈도우 생성하기
@@ -66,6 +71,12 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	glPointSize(1.f);
 	glLineWidth(5.f);
 
+	// 조준선 초기화
+	crosshair = Crosshair(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f); 
+	crosshair.Init(shaderProgramID); // Crosshair 객체 초기화
+	//-------------
+	pointCrosshair.Init(shaderProgramID);
+
 	camera.lockMouse();
 
 	line_x.SetVertex(glm::vec3(1.0f, 0.0f, 0.0f), 0);
@@ -88,14 +99,14 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	line_y.cnt = 2;
 	line_z.cnt = 2;
 
-	for (int i{}; i < 10; ++i) {
-		for (int j{}; j < 10; ++j) {
-			shape::Cube* cube = new shape::Cube{ "sphere.txt", 0 };
-			cube->Transform_World(glm::vec3(-1.0f + (i * 0.2f), -1.0f + (j * 0.2f), 0.0f));
-			cube->Scale(glm::vec3(0.02f, 0.02f, 0.02));
-			cubes.push_back(cube);
-		}
-	}
+	//for (int i{}; i < 10; ++i) {
+	//	for (int j{}; j < 10; ++j) {
+	//		shape::Cube* cube = new shape::Cube{ "sphere.txt", 0 };
+	//		cube->Transform_World(glm::vec3(-1.0f + (i * 0.2f), -1.0f + (j * 0.2f), 0.0f));
+	//		cube->Scale(glm::vec3(0.02f, 0.02f, 0.02));
+	//		cubes.push_back(cube);
+	//	}
+	//}
 
 	glutTimerFunc(60, TimerFunction, 1); // 타이머함수 재 설정
 
@@ -134,6 +145,10 @@ GLvoid drawScene() //--- 콜백 함수: 그리기 콜백 함수
 
 	for(shape::Cube* cube : cubes)
 		DrawShape(camera, shaderProgramID, vao, vbo, &ebo, *cube, isOrtho);
+
+	// 조준선 렌더링
+	//crosshair.Draw(shaderProgramID, SCREENWIDTH, SCREENHEIGHT);
+	pointCrosshair.Draw(shaderProgramID, SCREENWIDTH, SCREENHEIGHT);
 
 	// 여기까지-----------------------------------------------
 
