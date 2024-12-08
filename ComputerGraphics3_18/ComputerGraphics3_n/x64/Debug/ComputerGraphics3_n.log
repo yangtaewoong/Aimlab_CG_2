@@ -1,20 +1,8 @@
-﻿  crosshair.cpp
-  cube.cpp
-  DefaultShape.cpp
-  main.cpp
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(45,6): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(187,2): warning C4060: switch문에 'case' 또는 'default' 레이블이 없습니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(228,26): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(228,23): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(240,26): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(240,23): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  pointcrosshair.cpp
-  shaderSourceCode.cpp
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\shaderSourceCode.cpp(399,33): warning C4267: '인수': 'size_t'에서 'GLsizei'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\shaderSourceCode.cpp(416,76): warning C4312: '형식 캐스트': 'int'에서 더 큰 'void *'(으)로의 변환입니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\shaderSourceCode.cpp(431,34): warning C4267: '인수': 'size_t'에서 'GLsizei'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\shaderSourceCode.cpp(450,77): warning C4312: '형식 캐스트': 'int'에서 더 큰 'void *'(으)로의 변환입니다.
-  shape.cpp
-  test.cpp
-  코드를 생성하고 있습니다...
+﻿  main.cpp
+C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(49,6): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
+C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(209,2): warning C4060: switch문에 'case' 또는 'default' 레이블이 없습니다.
+C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(250,26): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(250,23): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(262,26): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\ComputerGraphics3_n\main.cpp(262,23): warning C4244: '인수': 'int'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   ComputerGraphics3_n.vcxproj -> C:\Users\82109\OneDrive\문서\GitHub\Aimlab_CG_2\ComputerGraphics3_18\x64\Debug\ComputerGraphics3_n.exe
