@@ -99,14 +99,14 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	line_y.cnt = 2;
 	line_z.cnt = 2;
 
-	//for (int i{}; i < 10; ++i) {
-	//	for (int j{}; j < 10; ++j) {
-	//		shape::Cube* cube = new shape::Cube{ "sphere.txt", 0 };
-	//		cube->Transform_World(glm::vec3(-1.0f + (i * 0.2f), -1.0f + (j * 0.2f), 0.0f));
-	//		cube->Scale(glm::vec3(0.02f, 0.02f, 0.02));
-	//		cubes.push_back(cube);
-	//	}
-	//}
+	for (int i{}; i < 10; ++i) {
+		for (int j{}; j < 10; ++j) {
+			shape::Cube* cube = new shape::Cube{ "sphere.txt", 0 };
+			cube->Transform_World(glm::vec3(-1.0f + (i * 0.2f), -1.0f + (j * 0.2f), 0.0f));
+			cube->Scale(glm::vec3(0.02f, 0.02f, 0.02));
+			cubes.push_back(cube);
+		}
+	}
 
 	glutTimerFunc(60, TimerFunction, 1); // 타이머함수 재 설정
 
