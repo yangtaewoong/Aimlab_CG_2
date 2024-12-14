@@ -94,15 +94,15 @@ void read_obj_file(const char* filename, shape::Model* model) {
 
 	// Allocate memory
 	if (model->vertex_count > 0) {
-		std::cout << "¹öÅØ½º °¹¼ö : " << model->vertex_count << std::endl;
+		//std::cout << "¹öÅØ½º °¹¼ö : " << model->vertex_count << std::endl;
 		model->vertices = (Vertex*)malloc(model->vertex_count * sizeof(Vertex));
 	}
 	if (model->normal_count > 0) {
-		std::cout << "³ë¸Ö °¹¼ö : " << model->normal_count << std::endl;
+		//std::cout << "³ë¸Ö °¹¼ö : " << model->normal_count << std::endl;
 		model->normals = (Vertex*)malloc(model->normal_count * sizeof(Vertex));
 	}
 	if (model->face_count > 0) {
-		std::cout << "¸é °¹¼ö °¹¼ö : " << model->face_count << std::endl;
+		//std::cout << "¸é °¹¼ö °¹¼ö : " << model->face_count << std::endl;
 		model->faces = (Face*)malloc(model->face_count * sizeof(Face));
 	}
 	if(!model->vertices || !model->normals || !model->faces) {
@@ -117,7 +117,7 @@ void read_obj_file(const char* filename, shape::Model* model) {
 			if (sscanf(line + 2, "%f %f %f", &model->vertices[vertex_index].x,
 				&model->vertices[vertex_index].y,
 				&model->vertices[vertex_index].z) == 3) {
-				std::println("vertex {}: {} {} {}", vertex_index, model->vertices[vertex_index].x, model->vertices[vertex_index].y, model->vertices[vertex_index].z);
+				//std::println("vertex {}: {} {} {}", vertex_index, model->vertices[vertex_index].x, model->vertices[vertex_index].y, model->vertices[vertex_index].z);
 				vertex_index++;
 			}
 		}
@@ -131,7 +131,7 @@ void read_obj_file(const char* filename, shape::Model* model) {
 		else if (line[0] == 'f' && line[1] == ' ') {
 			unsigned int v1, v2, v3, n1, n2, n3, t1, t2, t3;
 			if (sscanf(line + 2, "%u//%u %u//%u %u//%u", &v1, &n1, &v2, &n2, &v3, &n3) == 6) {
-				std::println("face {} : {} {} {}", face_index, v1, v2, v3);
+				//std::println("face {} : {} {} {}", face_index, v1, v2, v3);
 				model->faces[face_index].v1 = v1 - 1;  // OBJ indices are 1-based, subtract 1
 				model->faces[face_index].v2 = v2 - 1;
 				model->faces[face_index].v3 = v3 - 1;
@@ -141,7 +141,7 @@ void read_obj_file(const char* filename, shape::Model* model) {
 				face_index++;
 			}
 			else if (sscanf(line + 2, "%u %u %u", &v1, &v2, &v3) == 3) {
-				std::println("face {} : {} {} {}", face_index, v1, v2, v3);
+				//std::println("face {} : {} {} {}", face_index, v1, v2, v3);
 				model->faces[face_index].v1 = v1 - 1;  // OBJ indices are 1-based, subtract 1
 				model->faces[face_index].v2 = v2 - 1;
 				model->faces[face_index].v3 = v3 - 1;
@@ -151,7 +151,7 @@ void read_obj_file(const char* filename, shape::Model* model) {
 				face_index++;
 			}
 			else if (sscanf(line + 2, "%u/%u/%u %u/%u/%u %u/%u/%u", &v1, &n1, &t1, &v2, &n2, &t2, &v3, &n3, &t3) == 9) {
-				std::println("face {} : {} {} {}", face_index, v1, v2, v3);
+				//std::println("face {} : {} {} {}", face_index, v1, v2, v3);
 				model->faces[face_index].v1 = v1 - 1;  // OBJ indices are 1-based, subtract 1
 				model->faces[face_index].v2 = v2 - 1;
 				model->faces[face_index].v3 = v3 - 1;

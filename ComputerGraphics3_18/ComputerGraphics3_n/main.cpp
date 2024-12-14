@@ -1,14 +1,16 @@
 #define _CRT_SECURE_NO_WARNINGS //--- 프로그램 맨 앞에 선언할 것
 #include <iostream>
 #include <vector>
+#include <cmath>
 #include "random.h"
 #include "shaderSourceCode.h"
 #include "crosshair.h"	//--- 크로스헤어 헤더 추가
 #include "pointcrosshair.h"
 #include "emptycrosshair.h"
 
-#define SCREENWIDTH 1920
+#define SCREENWIDTH 1020
 #define SCREENHEIGHT 1080
+
 
 // 사용자 정의 함수
 GLvoid Reshape(int w, int h); //--- 콜백 함수: 다시 그리기 콜백 함수
@@ -46,6 +48,30 @@ PointCrosshair pointCrosshair(glm::vec3(0.0f, 1.0f, 0.0f), 5.0f); // 녹색, 크기 
 EmptyCrosshair emptyCrosshair(glm::vec3(0.0f, 1.0f, 0.0f), 0.02f, 0.005f);
 int crosshairType = 1;
 
+bool isObjectInCenter(const glm::vec3& objectPosition, const shape::Camera& camera,
+	float aspectRatio,float angleThreshold = 0.01f, float screenDistanceThreshold = 0.04f) {
+	// 카메라 위치에서 도형으로 향하는 벡터
+	glm::vec3 toObject = glm::normalize(objectPosition - camera.position);
+	// 카메라 시선 벡터와의 각도 확인 (dot product 사용)
+	float dotProduct = glm::dot(toObject, camera.front);
+
+	if (dotProduct < (1.0f - angleThreshold)) {
+		return false; // 각도가 일정 범위 이상이면 중앙에 있지 않음
+	}
+
+	glm::mat4 projection = camera.GetProjectionMatrix(aspectRatio, 0.1f, 100.0f);
+	glm::mat4 view = camera.GetViewMatrix();
+	glm::vec4 clipSpacePos = projection * view * glm::vec4(objectPosition, 1.0f);
+	glm::vec3 ndcPos = glm::vec3(clipSpacePos) / clipSpacePos.w; // NDC 좌표 계산
+	glm::vec2 screenPos = glm::vec2(ndcPos.x, ndcPos.y); // 화면 중심으로부터의 상대 거리 (-1 ~ 1 범위)
+
+	// 화면 중심으로부터의 거리 확인
+	return glm::length(screenPos) <= screenDistanceThreshold;
+}
+
+
+
+
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
 	//--- 윈도우 생성하기
@@ -79,7 +105,6 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	crosshair = Crosshair(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f); 
 	crosshair.Init(shaderProgramID); 
 	emptyCrosshair.Init(shaderProgramID);
-	//-------------
 	pointCrosshair.Init(shaderProgramID);
 
 	camera.lockMouse();
@@ -148,8 +173,19 @@ GLvoid drawScene() //--- 콜백 함수: 그리기 콜백 함수
 	DrawShape(camera, shaderProgramID, vao, vbo, line_z, isOrtho);
 	DrawShape_NoneCamera(camera, shaderProgramID, vao, vbo, line_camera, isOrtho);
 
-	for(shape::Cube* cube : cubes)
+	// 도형들 그리기 및 중앙 검사
+	bool objectInCenter = false;
+	float asepectRatio = 1020.0f / 1080.0f;
+	for (shape::Cube* cube : cubes) {
 		DrawShape(camera, shaderProgramID, vao, vbo, &ebo, *cube, isOrtho);
+		// 도형이 화면 중앙에 있는지 검사
+		if (isObjectInCenter(cube->GetPosition(), camera, asepectRatio)) {
+			objectInCenter = true;
+			std::cout << "도형이 인식됨" << std::endl;
+
+		}
+	}
+
 
 	// 현재 선택된 조준선 렌더링
 	if (crosshairType == 1) {

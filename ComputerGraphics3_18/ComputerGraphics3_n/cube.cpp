@@ -141,3 +141,9 @@ void Cube::Scale(glm::vec3 temp)
         scale = scaleMatrix * scale;
     }
 }
+
+glm::vec3 Cube::GetPosition() const
+{
+    // transform_world의 4번째 열에서 번역 성분 추출
+    return glm::vec3(transform_world[3][0], transform_world[3][1], transform_world[3][2]);
+}

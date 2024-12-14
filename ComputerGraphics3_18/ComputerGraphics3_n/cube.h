@@ -3,6 +3,7 @@
 
 namespace shape
 {
+	
 	class Cube : public Shape
 	{
 	public:
@@ -39,5 +40,7 @@ namespace shape
 		void Transform_change(glm::vec3);
 
 		void Scale(glm::vec3);
+
+		glm::vec3 GetPosition() const;
 	};
 }

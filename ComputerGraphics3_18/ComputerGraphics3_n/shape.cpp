@@ -1,7 +1,8 @@
 #pragma once
 #include "shape.h"
+#include <iostream>
 
-#define SCREENWIDTH 1980
+#define SCREENWIDTH 1920
 #define SCREENHEIGHT 1080
 
 using namespace shape;
@@ -46,7 +47,7 @@ void Camera::calculateCameraFront()
 
 	// 앞 방향 벡터를 정규화
 	front = glm::normalize(temp);
-	std::cout << "front : " << front.x << ", " << front.y << ", " << front.z << std::endl;
+	//std::cout << "front : " << front.x << ", " << front.y << ", " << front.z << std::endl;
 
 	// Right 벡터 계산 (카메라의 오른쪽 방향)
 	glm::vec3 right = glm::normalize(glm::cross(front, glm::vec3(0.0f, 1.0f, 0.0f)));
@@ -54,6 +55,18 @@ void Camera::calculateCameraFront()
 	up = glm::normalize(glm::cross(right, front));
 }
 
+glm::mat4 Camera::GetViewMatrix() const
+{
+	// 카메라 위치, 시선 방향, Up 벡터를 기반으로 뷰 행렬 생성
+	return glm::lookAt(position, position + front, up);
+}
+
+glm::mat4 Camera::GetProjectionMatrix(float aspectRatio, float nearPlane, float farPlane) const
+{
+	// 원근 투영 행렬 생성
+	return glm::perspective(glm::radians(fov), aspectRatio, nearPlane, farPlane);
+
+}
 void Camera::lockMouse() {
 	if (isMouseLocked) {
 		ignoreMouseEvent = true;
@@ -82,7 +95,7 @@ void Camera::mouseCallback(GLfloat xPos, GLfloat yPos)
 		yaw += xoffset;  // yaw: 좌우 회전 (수평 회전)
 		pitch += yoffset; // pitch: 위/아래 회전 (수직 회전)
 
-		std::cout << yaw << ", " << pitch << std::endl;
+		//std::cout << yaw << ", " << pitch << std::endl;
 
 		// Pitch 제한 (위아래 회전 제한)
 		if (pitch > 80.0f)

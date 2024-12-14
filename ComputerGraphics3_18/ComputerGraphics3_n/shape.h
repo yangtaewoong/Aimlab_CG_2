@@ -59,6 +59,7 @@ namespace shape
 		GLfloat sensitivity{};        // 마우스 감도
 		GLfloat yaw{}; // 카메라의 Y축 회전 (수평) // 기본적으로 -Z축을 바라보도록 초기화 (-90도)
 		GLfloat pitch{}; // 카메라의 X축 회전 (수직) // 위아래 각도는 초기에는 수평 상태
+
 		bool isMouseLocked{}; // 마우스 고정 여부
 		bool firstMouse{};       // 마우스 초기 이동 감지
 		bool ignoreMouseEvent{}; // 마우스 중앙 고정 이벤트 무시 플래그
@@ -72,6 +73,9 @@ namespace shape
 		void setIsMouseLocked(bool);
 
 		void mouseCallback(GLfloat, GLfloat);
+
+		glm::mat4 GetViewMatrix() const; // 카메라의 뷰 행렬 계산
+		glm::mat4 GetProjectionMatrix(float aspectRatio, float nearPlane, float farPlane) const; // 투영 행렬 계산
 
 	};
 }
