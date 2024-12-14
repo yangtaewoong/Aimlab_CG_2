@@ -33,17 +33,24 @@ namespace shape
 	} Vertex;
 
 	typedef struct {
-		unsigned int v1, v2, v3;  // Vertex indices
-		//unsigned int n1, n2, n3;  // Normal indices
-		//unsigned int t1, t2, t3;
+		float u, v;
+	} Texture;
+
+
+	typedef struct {
+		unsigned int v1, v2, v3, v4;  // Vertex indices
+		unsigned int t1, t2, t3, t4;
+		unsigned int n1, n2, n3, n4;  // Normal indices
 	} Face;
 
 	typedef struct {
 		Vertex* vertices;
 		Vertex* normals;
-		size_t vertex_count;
-		size_t normal_count;
+		Texture* textures;
 		Face* faces;
+		size_t vertex_count;
+		size_t textures_count;
+		size_t normal_count;
 		size_t face_count;
 	} Model;
 

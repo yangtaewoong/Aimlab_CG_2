@@ -69,13 +69,13 @@ void Cube::DrawShape()
         Face face = model.faces[i];
 
         // Draw each vertex of the face with its corresponding normal
-       // glNormal3f(model.normals[face.n1].x, model.normals[face.n1].y, model.normals[face.n1].z);
+        glNormal3f(model.normals[face.n1].x, model.normals[face.n1].y, model.normals[face.n1].z);
         glVertex3f(model.vertices[face.v1].x, model.vertices[face.v1].y, model.vertices[face.v1].z);
 
-       // glNormal3f(model.normals[face.n2].x, model.normals[face.n2].y, model.normals[face.n2].z);
+        glNormal3f(model.normals[face.n2].x, model.normals[face.n2].y, model.normals[face.n2].z);
         glVertex3f(model.vertices[face.v2].x, model.vertices[face.v2].y, model.vertices[face.v2].z);
 
-       // glNormal3f(model.normals[face.n3].x, model.normals[face.n3].y, model.normals[face.n3].z);
+        glNormal3f(model.normals[face.n3].x, model.normals[face.n3].y, model.normals[face.n3].z);
         glVertex3f(model.vertices[face.v3].x, model.vertices[face.v3].y, model.vertices[face.v3].z);
     }
     glEnd();

@@ -8,7 +8,7 @@
 #include "pointcrosshair.h"
 #include "emptycrosshair.h"
 
-#define SCREENWIDTH 1020
+#define SCREENWIDTH 1980
 #define SCREENHEIGHT 1080
 
 
@@ -26,6 +26,9 @@ void Motion(int x, int y);
 GLuint shaderProgramID; // 세이더 프로그램 이름
 GLuint vertexShader; // 버텍스 세이더 객체
 GLuint fragmentShader; // 프래그먼트 세이더 객체
+GLuint shaderProgramID_noneLight; // 세이더 프로그램 이름
+GLuint vertexShader_noneLight; // 버텍스 세이더 객체
+GLuint fragmentShader_noneLight; // 프래그먼트 세이더 객체
 shape::Camera camera;
 bool setTimer = true;
 bool isLeftButtonClick;
@@ -36,7 +39,6 @@ GLuint vao, vbo[2], ebo;
 shape::DefaultShape line_x{};
 shape::DefaultShape line_y{};
 shape::DefaultShape line_z{};
-shape::DefaultShape line_camera{};
 std::vector<shape::Cube*> cubes;
 bool isDepth = true;
 bool isOrtho = false;
@@ -69,9 +71,6 @@ bool isObjectInCenter(const glm::vec3& objectPosition, const shape::Camera& came
 	return glm::length(screenPos) <= screenDistanceThreshold;
 }
 
-
-
-
 void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 {
 	//--- 윈도우 생성하기
@@ -95,17 +94,19 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_POLYGON_SMOOTH);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	// 세이더 읽어와서 세이더 프로그램 만들기
 	make_shaderProgram(vertexShader, fragmentShader, shaderProgramID);
+	make_shaderProgram_noneLight(vertexShader_noneLight, fragmentShader_noneLight, shaderProgramID_noneLight);
 	glPointSize(1.f);
 	glLineWidth(5.f);
 
 	// 조준선 초기화
 	crosshair = Crosshair(glm::vec3(1.0f, 1.0f, 1.0f), 0.3f); 
-	crosshair.Init(shaderProgramID); 
-	emptyCrosshair.Init(shaderProgramID);
-	pointCrosshair.Init(shaderProgramID);
+	crosshair.Init(shaderProgramID_noneLight);
+	emptyCrosshair.Init(shaderProgramID_noneLight);
+	pointCrosshair.Init(shaderProgramID_noneLight);
 
 	camera.lockMouse();
 
@@ -115,28 +116,30 @@ void main(int argc, char** argv) //--- 윈도우 출력하고 콜백함수 설정
 	line_y.SetVertex(glm::vec3(0.0f, -1.0f, 0.0f), 1);
 	line_z.SetVertex(glm::vec3(0.0f, 0.0f, 1.0f), 0);
 	line_z.SetVertex(glm::vec3(0.0f, 0.0f, -1.0f), 1);
-	line_camera.SetVertex(camera.front - camera.position, 0);
-	line_camera.SetVertex(camera.position, 1);
 	line_x.SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.5f), 0);
 	line_x.SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.5f), 1);
 	line_y.SetColor(glm::vec4(0.0f, 1.0f, 0.0f, 0.5f), 0);
 	line_y.SetColor(glm::vec4(0.0f, 1.0f, 0.0f, 0.5f), 1);
 	line_z.SetColor(glm::vec4(0.0f, 0.0f, 1.0f, 0.5f), 0);
 	line_z.SetColor(glm::vec4(0.0f, 0.0f, 1.0f, 0.5f), 1);
-	line_camera.SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 0);
-	line_camera.SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), 1);
 	line_x.cnt = 2;
 	line_y.cnt = 2;
 	line_z.cnt = 2;
 
-	for (int i{}; i < 10; ++i) {
-		for (int j{}; j < 10; ++j) {
-			shape::Cube* cube = new shape::Cube{ "sphere.txt", 0 };
-			cube->Transform_World(glm::vec3(-1.0f + (i * 0.2f), -1.0f + (j * 0.2f), 0.0f));
-			cube->Scale(glm::vec3(0.02f, 0.02f, 0.02));
-			cubes.push_back(cube);
-		}
-	}
+	//for (int i{}; i < 11; ++i) {
+	//	for (int j{}; j < 11; ++j) {
+	//		shape::Cube* cube = new shape::Cube{ "sphere.txt", 0 };
+	//		cube->Transform_World(glm::vec3(-1.0f + (i * 0.2f), -1.0f + (j * 0.2f), 0.6f));
+	//		cube->Scale(glm::vec3(0.02f, 0.02f, 0.02f));
+	//		cubes.push_back(cube);
+	//	}
+	//}
+
+	shape::Cube* cube = new shape::Cube{ "sphere.txt", 0 };
+	cube->model.face_count *= 2;
+	cube->Transform_World(glm::vec3(0.0f, 0.0f, 0.6f));
+	cube->Scale(glm::vec3(0.2f, 0.2f, 0.2f));
+	cubes.push_back(cube);
 
 	glutTimerFunc(60, TimerFunction, 1); // 타이머함수 재 설정
 
@@ -163,40 +166,38 @@ GLvoid drawScene() //--- 콜백 함수: 그리기 콜백 함수
 	// 그리기 부분 구현: 그리기 관련 부분이 여기에 포함된다.
 
 	// 렌더링 파이프라인에 세이더 불러오기
-	glUseProgram(shaderProgramID);
+	glUseProgram(shaderProgramID_noneLight);
 
 	// 여기부터------------------------------------------------
 
 	// x y z 축
-	DrawShape(camera, shaderProgramID, vao, vbo, line_x, isOrtho);
-	DrawShape(camera, shaderProgramID, vao, vbo, line_y, isOrtho);
-	DrawShape(camera, shaderProgramID, vao, vbo, line_z, isOrtho);
-	DrawShape_NoneCamera(camera, shaderProgramID, vao, vbo, line_camera, isOrtho);
+	DrawShape(camera, shaderProgramID_noneLight, vao, vbo, line_x, isOrtho);
+	DrawShape(camera, shaderProgramID_noneLight, vao, vbo, line_y, isOrtho);
+	DrawShape(camera, shaderProgramID_noneLight, vao, vbo, line_z, isOrtho);
+
+		// 현재 선택된 조준선 렌더링
+	if (crosshairType == 1) {
+		crosshair.Draw(shaderProgramID_noneLight, SCREENWIDTH, SCREENHEIGHT); // 기본 십자 조준선
+	}
+	else if (crosshairType == 2) {
+		pointCrosshair.Draw(shaderProgramID_noneLight, SCREENWIDTH, SCREENHEIGHT); // 점 조준선
+	}
+	else if (crosshairType == 3) {
+		emptyCrosshair.Draw(shaderProgramID_noneLight, SCREENWIDTH, SCREENHEIGHT);
+	}
+
+	glUseProgram(shaderProgramID);
 
 	// 도형들 그리기 및 중앙 검사
 	bool objectInCenter = false;
-	float asepectRatio = 1020.0f / 1080.0f;
+	float asepectRatio = 1980.0f / 1080.0f;
 	for (shape::Cube* cube : cubes) {
 		DrawShape(camera, shaderProgramID, vao, vbo, &ebo, *cube, isOrtho);
 		// 도형이 화면 중앙에 있는지 검사
 		if (isObjectInCenter(cube->GetPosition(), camera, asepectRatio)) {
 			objectInCenter = true;
 			std::cout << "도형이 인식됨" << std::endl;
-
 		}
-	}
-
-
-	// 현재 선택된 조준선 렌더링
-	if (crosshairType == 1) {
-		crosshair.Draw(shaderProgramID, SCREENWIDTH, SCREENHEIGHT); // 기본 십자 조준선
-	}
-	else if (crosshairType == 2) {
-		pointCrosshair.Draw(shaderProgramID, SCREENWIDTH, SCREENHEIGHT); // 점 조준선
-	}
-	else if (crosshairType == 3) {
-		emptyCrosshair.Draw(shaderProgramID, SCREENWIDTH, SCREENHEIGHT);
-
 	}
 
 	// 여기까지-----------------------------------------------
@@ -231,6 +232,16 @@ void Keyboard(unsigned char key, int x, int y)
 		camera.position.x += 0.1f;
 		camera.front.x += 0.1f;
 		camera.up.x += 0.1f;
+		break;
+	case 'w':
+		camera.position.z += 0.1f;
+		camera.front.z += 0.1f;
+		camera.up.z += 0.1f;
+		break;
+	case 's':
+		camera.position.z -= 0.1f;
+		camera.front.z -= 0.1f;
+		camera.up.z -= 0.1f;
 		break;
 	case 'q':
 		glutLeaveMainLoop();
@@ -284,8 +295,6 @@ void PassiveMotion(int x, int y)
 	GLfloat yPos = 1.0f - (2.0f * y) / SCREENHEIGHT;
 
 	camera.mouseCallback(x, y);
-	line_camera.SetVertex(glm::normalize(camera.front - camera.position), 0);
-	line_camera.SetVertex(camera.position, 1);
 
 	glutPostRedisplay();
 }
@@ -296,8 +305,6 @@ void Motion(int x, int y)
 	GLfloat yPos = 1.0f - (2.0f * y) / SCREENHEIGHT;
 
 	camera.mouseCallback(x, y);	
-	line_camera.SetVertex(glm::normalize(camera.front - camera.position), 0);
-	line_camera.SetVertex(camera.position, 1);
 
 	if (isLeftButtonClick == true)
 	{

@@ -130,7 +130,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="fragment.glsl" />
+    <None Include="fragment_nonelight.glsl" />
     <None Include="vertex.glsl" />
+    <None Include="vertex_nonelight.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="crosshair.cpp" />
@@ -141,7 +143,6 @@
     <ClCompile Include="pointcrosshair.cpp" />
     <ClCompile Include="shaderSourceCode.cpp" />
     <ClCompile Include="shape.cpp" />
-    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crosshair.h" />
@@ -156,6 +157,7 @@
   <ItemGroup>
     <Text Include="cone.txt" />
     <Text Include="cube.txt" />
+    <Text Include="gun.txt" />
     <Text Include="pyramid.txt" />
     <Text Include="sphere.txt" />
   </ItemGroup>

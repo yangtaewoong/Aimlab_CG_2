@@ -8,12 +8,17 @@ char* filetobuf(const char* file);
 void free_model(shape::Model* model);
 void read_obj_file(const char* filename, shape::Model* model);
 void make_vertexShaders(GLuint& vertexShader);
+void make_vertexShaders_noneLight(GLuint& vertexShader);
 void make_fragmentShaders(GLuint& fragmentShader);
+void make_fragmentShaders_noneLight(GLuint& fragmentShader);
 void make_shaderProgram(GLuint& vertexShader, GLuint& fragmentShader, GLuint& shaderID);
+void make_shaderProgram_noneLight(GLuint& vertexShader, GLuint& fragmentShader, GLuint& shaderID);
 
 // 버퍼 함수
 void InitBuffer(GLuint& shaderID, GLuint& vao, GLuint* vbo, shape::DefaultShape defaultShape);
 void InitBuffer(GLuint& shaderID, GLuint& vao, GLuint* vbo, GLuint* ebo, shape::Cube defaultShape);
+void InitBuffer_noneLight(GLuint& shaderID, GLuint& vao, GLuint* vbo, shape::DefaultShape defaultShape);
+void InitBuffer_noneLight(GLuint& shaderID, GLuint& vao, GLuint* vbo, GLuint* ebo, shape::Cube defaultShape);
 
 // 카메라 설정 함수
 void SetCamera(shape::Camera camera, GLuint& shaderID, bool isOrtho);

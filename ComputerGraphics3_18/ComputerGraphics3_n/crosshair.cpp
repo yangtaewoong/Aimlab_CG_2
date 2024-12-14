@@ -16,36 +16,43 @@ void Crosshair::Init(GLuint shaderProgramID) {
     };
 
     float crosshairColors[] = {
-    0.0f, 0.0f, 0.0f, 1.0f,
-    0.0f, 0.0f, 0.0f, 1.0f, 
-    0.0f, 0.0f, 0.0f, 1.0f, 
-    0.0f, 0.0f, 0.0f, 1.0f  
+    0.0f, 1.0f, 0.0f, 1.0f,
+    0.0f, 1.0f, 0.0f, 1.0f, 
+    0.0f, 1.0f, 0.0f, 1.0f, 
+    0.0f, 1.0f, 0.0f, 1.0f  
     };
 
+    glGenVertexArrays(1, &vao); //--- VAO 를 지정하고 할당하기
 
-    // VAO, VBO 생성
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(2, vbo);
+    glBindVertexArray(vao); //--- VAO를 바인드하기
 
-    glBindVertexArray(vao);
-
-    // 위치 데이터
+    glGenBuffers(2, vbo); //--- 2개의 VBO를 지정하고 할당하기
+    //--- 1번째 VBO를 활성화하여 바인드하고, 버텍스 속성 (좌표값)을 저장
     glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(crosshairVertices), crosshairVertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
 
-    // 색상 데이터
+    //--- 변수 diamond 에서 버텍스 데이터 값을 버퍼에 복사한다.
+    glBufferData(GL_ARRAY_BUFFER, sizeof(crosshairVertices), crosshairVertices, GL_STATIC_DRAW);
+    //--- 좌표값을 attribute 인덱스 0번에 명시한다
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    //--- attribute 인덱스 0번을 사용가능하게 함
+    glEnableVertexAttribArray(0);
+    //--- 2번째 VBO를 활성화 하여 바인드 하고, 버텍스 속성 (색상)을 저장
     glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+    //--- 변수 colors에서 버텍스 색상을 복사한다.
     glBufferData(GL_ARRAY_BUFFER, sizeof(crosshairColors), crosshairColors, GL_STATIC_DRAW);
+    //--- 색상값을 attribute 인덱스 1번에 명시한다
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    //--- attribute 인덱스 1번을 사용 가능하게 함.
     glEnableVertexAttribArray(1);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    glUseProgram(shaderProgramID);
+    int lightPosLocation = glGetUniformLocation(shaderProgramID, "lightPos"); //--- lightColor 값 전달: (1.0, 1.0, 1.0) 백색
+    glUniform3f(lightPosLocation, 0.0f, 0.0f, 0.0f);
+    int lightColorLocation = glGetUniformLocation(shaderProgramID, "lightColor"); //--- lightColor 값 전달: (1.0, 1.0, 1.0) 백색
+    glUniform3f(lightColorLocation, 0.0f, 0.0f, 0.0f);
+    unsigned int objColorLocation = glGetUniformLocation(shaderProgramID, "objectColor"); //--- object Color값 전달: (1.0, 0.5, 0.3)의 색
+    glUniform3f(objColorLocation, color.x, color.y, color.z);
 }
-
-
 
 void Crosshair::SetColor(glm::vec3 newColor) {
     color = newColor;

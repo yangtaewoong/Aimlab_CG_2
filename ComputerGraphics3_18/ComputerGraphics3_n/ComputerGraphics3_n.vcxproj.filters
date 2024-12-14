@@ -21,6 +21,12 @@
     <None Include="fragment.glsl">
       <Filter>소스 파일</Filter>
     </None>
+    <None Include="vertex_nonelight.glsl">
+      <Filter>소스 파일</Filter>
+    </None>
+    <None Include="fragment_nonelight.glsl">
+      <Filter>소스 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -36,9 +42,6 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cube.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="test.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="crosshair.cpp">
@@ -88,6 +91,9 @@
       <Filter>리소스 파일</Filter>
     </Text>
     <Text Include="sphere.txt">
+      <Filter>리소스 파일</Filter>
+    </Text>
+    <Text Include="gun.txt">
       <Filter>리소스 파일</Filter>
     </Text>
   </ItemGroup>
